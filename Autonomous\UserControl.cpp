@@ -69,13 +69,13 @@ void OperatorControl(){
     rightVic2.set(-0.5);
     Wait(.001);
   if(speedsStick.GetX() <= -0.2)
-    printf("1X: %f\n", speedStick.GetX());
+    //printf("1X: %f\n", speedStick.GetX());
     leftVic1.Set(-0.5);
     leftVic2.Set(-0.5);
     rightVic1.Set(0.5);
     rightVic.Set(0.5);
     Wait(.001);
-  if (speedStick.GetX()>=-0.2 && s[eedStick.GetX() <= 0.2)
+  if (speedStick.GetX()>=-0.2 && speedStick.GetX() <= 0.2)
     leftVic1.Set(0.0);
     leftVic2.Set(0.0);
     rightVic1.Set(0.0);
