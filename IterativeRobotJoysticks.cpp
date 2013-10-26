@@ -7,6 +7,9 @@
 #define PORT_JS_SPEED 1
 #define PORT_JS_TURN 2
 #define PORT_JS_CONTROL 3
+#define PORT_COMPRESSOR_RELAY 0
+#define PORT_COMPRESSOR_END 0
+#define PORT_SOLENOID_YES 0
 
 class MyRobot : public IterativeRobot {
 	Victor leftVic1;
@@ -16,6 +19,7 @@ class MyRobot : public IterativeRobot {
 	Joystick speedStick;
 	Joystick turnStick;
 	Joystick controlStick;
+	Solenoid aSolenoid;
 	Timer t;
 
 	public:
@@ -27,12 +31,16 @@ class MyRobot : public IterativeRobot {
 		speedStick(PORT_JS_SPEED),
 		turnStick(PORT_JS_TURN),
 		controlStick(PORT_JS_CONTROL),
+		aSolenoid(PORT_SOLENOID_YES),
 		t()
 	{
 	}
 
 	void AutonomousInit() {
 		t.Start();
+		Compressor *c = new Compressor(PORT_COMPRESSOR_END, PORT_COMPRESSOR_RELAY);//ports not known yet
+		c->Start();
+		aSolenoid.Set(true);
 	}
 	void AutonomousPeriodic(){
 		if(t.Get()<5.0){
