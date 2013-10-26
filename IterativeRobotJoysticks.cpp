@@ -1,4 +1,4 @@
-#include <WPILib>
+#include <WPILib.h>
 #define PORT_DRIVE_VIC_1 5
 #define PORT_DRIVE_VIC_2 10
 #define PORT_DRIVE_VIC_3 2
@@ -24,11 +24,13 @@ rightVic1(PORT_DRIVE_VIC_3),
 rightvic2(PORT_DRIVE_VIC_4),
 speedStick(PORT_JS_SPEED),
 turnStick(PORT_JS_TURN),
-controlStick(PORT_JS_CONTROL)
+controlStick(PORT_JS_CONTROL),
+t()
 {
 
 }
-void AutonomousInit{
+
+void AutonomousInit(){
 t.Start();
 }
 void AutonomousPeriodic(){
@@ -51,18 +53,19 @@ void AutonomousPeriodic(){
     rightvic2.Set(0.0);
 }
 void AutonomousDisabled(){
-  print("Autonomous mode disabled")
+  printf("Autonomous mode disabled"/n);
 }
 void TeleopInit(){
   
 }
 void TeleopPeriodic(){
-  leftvic1.Set(speedStick.GetY+turnStick.GetX);
-  leftVic2.Set(speedStick.GetY+turnStick.GetX);
-  rightVic1.Set(-(speedStick.GetY-turnStick.GetX));
-  rightVic2.Set(-(speedStick.GetY-turnStick.GetX));
+  leftvic1.Set(speedStick.GetY()+turnStick.GetX());
+  leftVic2.Set(speedStick.GetY()+turnStick.GetX());
+  rightVic1.Set(-(speedStick.GetY()-turnStick.GetX()));
+  rightVic2.Set(-(speedStick.GetY()-turnStick.GetX()));
 }
 void TeleopDisabled(){
-print("Teleop Disabled");
+printf("Teleop Disabled"/n);
 }
+};
 START_ROBOT_CLASS(MyRobot);
