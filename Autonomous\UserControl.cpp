@@ -33,7 +33,7 @@ void Autonomous(){
 //if need be can be changed (most likely will be changed)
 //the stuff we want the robot to do during autonomous mode
   //right
-  for(int i=0, i<16, i++){
+  for(int i=0, i<4, i++){
   leftVic1.Set(0.5);
   leftVic2.Set(0.5);
   rightVic1.Set(0.0);
@@ -50,7 +50,7 @@ void Autonomous(){
   leftVic2.Set(0.5);
   rightVic1.Set(-0.5);
   rightVic2.Set(-0.5);
-  wait(4.0);
+  wait(1.0);
   //stop
   leftVic1.Set(0.0)
   leftVic2.Set(0.0);
@@ -66,7 +66,7 @@ void OperatorControl(){
   leftVic2.Set(speedStick.GetY+turnStick.GetX);
   rightVic1.Set(-(speedStick.GetY-turnStick.GetX));
   rightVic2.Set(-(speedStick.GetY-turnStick.GetX));
-  wait(0.005);l
+  wait(0.005);
   }
 };
 START_ROBOT_CLASS(MyRobot);
