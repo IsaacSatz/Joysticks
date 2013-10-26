@@ -10,6 +10,8 @@
 #define PORT_COMPRESSOR_RELAY 0
 #define PORT_COMPRESSOR_END 0
 #define PORT_SOLENOID_YES 0
+#define PORT_SHOOT_VIC_1 0
+#define PORT_SHOOT_VIC_2 0
 
 class MyRobot : public IterativeRobot {
 	Victor leftVic1;
@@ -20,6 +22,8 @@ class MyRobot : public IterativeRobot {
 	Joystick turnStick;
 	Joystick controlStick;
 	Solenoid aSolenoid;
+	Victor shootVic1;
+	Victor shootVic2;
 	Timer t;
 
 	public:
@@ -32,6 +36,8 @@ class MyRobot : public IterativeRobot {
 		turnStick(PORT_JS_TURN),
 		controlStick(PORT_JS_CONTROL),
 		aSolenoid(PORT_SOLENOID_YES),
+		shootVic1(PORT_SHOOT_VIC_1),
+		shootVic2(PORT_SHOOT_VIC_2),
 		t()
 	{
 	}
@@ -40,7 +46,6 @@ class MyRobot : public IterativeRobot {
 		t.Start();
 		Compressor *c = new Compressor(PORT_COMPRESSOR_END, PORT_COMPRESSOR_RELAY);//ports not known yet
 		c->Start();
-		aSolenoid.Set(true);
 	}
 	void AutonomousPeriodic(){
 		if(t.Get()<5.0){
@@ -73,6 +78,11 @@ class MyRobot : public IterativeRobot {
 		leftVic2.Set(speedStick.GetY()+turnStick.GetX());
 		rightVic1.Set(-(speedStick.GetY()-turnStick.GetX()));
 		rightVic2.Set(-(speedStick.GetY()-turnStick.GetX()));
+		if(operatorStick.getTrigger()=true){
+			aSolenoid.Set(true);
+			//put in shooter victors here
+		}
+		}
 	}
 	void TeleopDisabled(){
 		printf("Teleop Disabled\n");
