@@ -7,12 +7,17 @@
 #define PORT_JS_SPEED 1
 #define PORT_JS_TURN 2
 #define PORT_JS_CONTROL 3
-#define PORT_COMPRESSOR_RELAY 0
-#define PORT_COMPRESSOR_END 0
+#define PORT_COMPRESSOR_RELAY 1
+#define PORT_COMPRESSOR_END 1
 #define PORT_SOLENOID_YES 0
-#define PORT_SHOOT_VIC_1 0
-#define PORT_SHOOT_VIC_2 0
-
+#define PORT_SHOOT_VIC_1 3
+#define PORT_SHOOT_VIC_2 4
+enum{
+	IDLE,
+	SPINNING,
+	EXTENDING,
+	RECEDING,
+}shooterState;
 class MyRobot : public IterativeRobot {
 	Victor leftVic1;
 	Victor leftVic2;
@@ -25,6 +30,8 @@ class MyRobot : public IterativeRobot {
 	Victor shootVic1;
 	Victor shootVic2;
 	Timer t;
+	Timer shootTimer;
+	Timer recedeTimer;
 
 	public:
 	MyRobot():
@@ -38,13 +45,15 @@ class MyRobot : public IterativeRobot {
 		aSolenoid(PORT_SOLENOID_YES),
 		shootVic1(PORT_SHOOT_VIC_1),
 		shootVic2(PORT_SHOOT_VIC_2),
-		t()
+		t(),
+		shootTimer(),
+		recedeTimer()
 	{
 	}
 
 	void AutonomousInit() {
 		t.Start();
-		Compressor *c = new Compressor(PORT_COMPRESSOR_END, PORT_COMPRESSOR_RELAY);//ports not known yet
+		Compressor *c = new Compressor(1, 1);
 		c->Start();
 	}
 	void AutonomousPeriodic(){
@@ -68,7 +77,7 @@ class MyRobot : public IterativeRobot {
 		}
 	}
 	void AutonomousDisabled(){
-		printf("Autonomous mode disabled\n");
+		printf("Autonomous mode Disabled\n");
 	}
 	void TeleopInit(){
 
@@ -78,10 +87,38 @@ class MyRobot : public IterativeRobot {
 		leftVic2.Set(speedStick.GetY()+turnStick.GetX());
 		rightVic1.Set(-(speedStick.GetY()-turnStick.GetX()));
 		rightVic2.Set(-(speedStick.GetY()-turnStick.GetX()));
-		if(operatorStick.getTrigger()=true){
-			aSolenoid.Set(true);
-			//put in shooter victors here
+		if(shooterState==IDLE){
+			if(operatorStick.getTrigger()=true){
+				shooterState==SPINNING;
+			}
 		}
+		else if(shooterState==SPINNING){
+			printf("Charging up/n")
+			shootTimer.Start();
+			shootVic1.Set(1.0);
+			shootVic2.Set(1.0);
+			if(shootTimer.Get()=5.0){
+			aSolenoid.Set(true);
+			}
+			shooterState==EXTENDING;
+		}
+		else if(shooterState==EXTENDING){
+			if(shootTimer.Get()>6.0){
+			a.Solenoid.Set(false);
+			shootTimer.Stop();
+			shootTimer.Reset();
+			shooterState==RECEDING;
+			}
+		}
+		else if(shooterState==RECEDING){
+			printf("Retracting/n");
+			recedeTimer.Start();
+			if(recedeTimer.Get()>2.0){
+				recedeTimer.Stop();
+				recedeTimer.Reset();
+				shooterState==IDLE;
+			}
+			
 		}
 	}
 	void TeleopDisabled(){
