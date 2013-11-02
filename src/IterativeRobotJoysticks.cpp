@@ -27,6 +27,7 @@ class MyRobot : public IterativeRobot {
 	Joystick turnStick;
 	Joystick controlStick;
 	Solenoid aSolenoid;
+	Compressor c;
 	Victor shootVic1;
 	Victor shootVic2;
 	Timer t;
@@ -43,6 +44,7 @@ class MyRobot : public IterativeRobot {
 		turnStick(PORT_JS_TURN),
 		controlStick(PORT_JS_CONTROL),
 		aSolenoid(PORT_SOLENOID_YES),
+		c(1, 1),
 		shootVic1(PORT_SHOOT_VIC_1),
 		shootVic2(PORT_SHOOT_VIC_2),
 		t(),
@@ -53,8 +55,6 @@ class MyRobot : public IterativeRobot {
 
 	void AutonomousInit() {
 		t.Start();
-		Compressor *c = new Compressor(1, 1);
-		c->Start();
 	}
 	void AutonomousPeriodic(){
 		if(t.Get()<5.0){
@@ -95,10 +95,11 @@ class MyRobot : public IterativeRobot {
 		else if(shooterState==SPINNING){
 			printf("Charging up\n");
 			shootTimer.Start();
-			shootVic1.Set(1.0);
-			shootVic2.Set(1.0);
+			shootVic1.Set(0.3);
+			shootVic2.Set(0.3);
 			if(shootTimer.Get()==5.0){
-			aSolenoid.Set(true);
+				c.Start();
+				aSolenoid.Set(true);
 			}
 			if(shootTimer.Get()>5.0){ //check this later
 				shooterState=EXTENDING;
