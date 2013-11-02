@@ -93,7 +93,7 @@ class MyRobot : public IterativeRobot {
 			}
 		}
 		else if(shooterState==SPINNING){
-			printf("Charging up/n");
+			printf("Charging up\n");
 			shootTimer.Start();
 			shootVic1.Set(1.0);
 			shootVic2.Set(1.0);
@@ -113,7 +113,7 @@ class MyRobot : public IterativeRobot {
 			}
 		}
 		else if(shooterState==RECEDING){
-			printf("Retracting/n");
+			printf("Retracting\n");
 			recedeTimer.Start();
 			if(recedeTimer.Get()>2.0){
 				recedeTimer.Stop();
