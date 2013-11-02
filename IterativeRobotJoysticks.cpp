@@ -9,7 +9,7 @@
 #define PORT_JS_CONTROL 3
 #define PORT_COMPRESSOR_RELAY 1
 #define PORT_COMPRESSOR_END 1
-#define PORT_SOLENOID_YES 0
+#define PORT_SOLENOID_YES 5
 #define PORT_SHOOT_VIC_1 3
 #define PORT_SHOOT_VIC_2 4
 enum{
@@ -100,7 +100,9 @@ class MyRobot : public IterativeRobot {
 			if(shootTimer.Get()=5.0){
 			aSolenoid.Set(true);
 			}
-			shooterState==EXTENDING;
+			if(shootTimer.Get>5.0){ //check this later
+				shooterState==EXTENDING;
+			}
 		}
 		else if(shooterState==EXTENDING){
 			if(shootTimer.Get()>6.0){
