@@ -52,7 +52,13 @@ class MyRobot : public IterativeRobot {
 		recedeTimer()
 	{
 	}
-
+	void RobotInit(){
+		c.Start();
+		printf("started the compressor\n")
+	}
+	void RobotDisabled(){
+		
+	}
 	void AutonomousInit() {
 		t.Start();
 	}
@@ -88,17 +94,20 @@ class MyRobot : public IterativeRobot {
 		rightVic1.Set(-(speedStick.GetY()-turnStick.GetX()));
 		rightVic2.Set(-(speedStick.GetY()-turnStick.GetX()));
 		if(shooterState==IDLE){
+			shootVic1.Set(0.0);
+			shootVic2.Set(0.0);
+			aSolenoid.Set(false);
 			if(controlStick.GetTrigger()==true){
 				shooterState=SPINNING;
+				shootTimer.Reset();
+				shootTimer.Start();
 			}
 		}
 		else if(shooterState==SPINNING){
 			printf("Charging up\n");
-			shootTimer.Start();
 			shootVic1.Set(0.3);
 			shootVic2.Set(0.3);
-			if(shootTimer.Get()==5.0){
-				c.Start();
+			if(shootTimer.Get()>=5.0){
 				aSolenoid.Set(true);
 			}
 			if(shootTimer.Get()>5.0){ //check this later
@@ -106,6 +115,7 @@ class MyRobot : public IterativeRobot {
 			}
 		}
 		else if(shooterState==EXTENDING){
+			aSolenoid.Set(true);
 			if(shootTimer.Get()>6.0){
 			aSolenoid.Set(false);
 			shootTimer.Stop();
