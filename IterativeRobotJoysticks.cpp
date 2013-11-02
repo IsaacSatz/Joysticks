@@ -88,8 +88,8 @@ class MyRobot : public IterativeRobot {
 		rightVic1.Set(-(speedStick.GetY()-turnStick.GetX()));
 		rightVic2.Set(-(speedStick.GetY()-turnStick.GetX()));
 		if(shooterState==IDLE){
-			if(operatorStick.getTrigger()=true){
-				shooterState==SPINNING;
+			if(controlStick.getTrigger()==true){
+				shooterState=SPINNING;
 			}
 		}
 		else if(shooterState==SPINNING){
@@ -97,19 +97,19 @@ class MyRobot : public IterativeRobot {
 			shootTimer.Start();
 			shootVic1.Set(1.0);
 			shootVic2.Set(1.0);
-			if(shootTimer.Get()=5.0){
+			if(shootTimer.Get()==5.0){
 			aSolenoid.Set(true);
 			}
-			if(shootTimer.Get>5.0){ //check this later
-				shooterState==EXTENDING;
+			if(shootTimer.Get()>5.0){ //check this later
+				shooterState=EXTENDING;
 			}
 		}
 		else if(shooterState==EXTENDING){
 			if(shootTimer.Get()>6.0){
-			a.Solenoid.Set(false);
+			aSolenoid.Set(false);
 			shootTimer.Stop();
 			shootTimer.Reset();
-			shooterState==RECEDING;
+			shooterState=RECEDING;
 			}
 		}
 		else if(shooterState==RECEDING){
@@ -118,7 +118,7 @@ class MyRobot : public IterativeRobot {
 			if(recedeTimer.Get()>2.0){
 				recedeTimer.Stop();
 				recedeTimer.Reset();
-				shooterState==IDLE;
+				shooterState=IDLE;
 			}
 			
 		}
