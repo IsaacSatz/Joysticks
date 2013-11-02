@@ -88,7 +88,7 @@ class MyRobot : public IterativeRobot {
 		rightVic1.Set(-(speedStick.GetY()-turnStick.GetX()));
 		rightVic2.Set(-(speedStick.GetY()-turnStick.GetX()));
 		if(shooterState==IDLE){
-			if(controlStick.getTrigger()==true){
+			if(controlStick.GetTrigger()==true){
 				shooterState=SPINNING;
 			}
 		}
