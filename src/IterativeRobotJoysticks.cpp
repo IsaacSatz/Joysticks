@@ -10,6 +10,7 @@
 #define PORT_COMPRESSOR_RELAY 1
 #define PORT_COMPRESSOR_END 1
 #define PORT_SOLENOID_YES 5
+#define PORT_SOLENOID_YES2 6
 #define PORT_SHOOT_VIC_1 3
 #define PORT_SHOOT_VIC_2 4
 enum{
@@ -27,6 +28,7 @@ class MyRobot : public IterativeRobot {
 	Joystick turnStick;
 	Joystick controlStick;
 	Solenoid aSolenoid;
+	Solenoid bSolenoid;
 	Compressor c;
 	Victor shootVic1;
 	Victor shootVic2;
@@ -44,6 +46,7 @@ class MyRobot : public IterativeRobot {
 		turnStick(PORT_JS_TURN),
 		controlStick(PORT_JS_CONTROL),
 		aSolenoid(PORT_SOLENOID_YES),
+		bSolenoid(PORT_SOLENOID_YES2),
 		c(1, 1),
 		shootVic1(PORT_SHOOT_VIC_1),
 		shootVic2(PORT_SHOOT_VIC_2),
@@ -97,6 +100,8 @@ class MyRobot : public IterativeRobot {
 			shootVic1.Set(0.0);
 			shootVic2.Set(0.0);
 			aSolenoid.Set(false);
+			bSolenoid.Set(true);
+			printf("Solenoid off\n");
 			if(controlStick.GetTrigger()==true){
 				shooterState=SPINNING;
 				shootTimer.Reset();
@@ -109,6 +114,8 @@ class MyRobot : public IterativeRobot {
 			shootVic2.Set(0.3);
 			if(shootTimer.Get()>=5.0){
 				aSolenoid.Set(true);
+				bSolenoid.Set(false);
+				printf("Solenoid on\n")
 			}
 			if(shootTimer.Get()>5.0){ //check this later
 				shooterState=EXTENDING;
@@ -118,6 +125,8 @@ class MyRobot : public IterativeRobot {
 			aSolenoid.Set(true);
 			if(shootTimer.Get()>6.0){
 			aSolenoid.Set(false);
+			bSolenoid.Set(true);
+			printf("Solenoid off\n")
 			shootTimer.Stop();
 			shootTimer.Reset();
 			shooterState=RECEDING;
