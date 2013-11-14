@@ -57,7 +57,7 @@ class MyRobot : public IterativeRobot {
 	}
 	void RobotInit(){
 		c.Start();
-		printf("started the compressor\n")
+		printf("started the compressor\n");
 	}
 	void RobotDisabled(){
 		
@@ -99,8 +99,8 @@ class MyRobot : public IterativeRobot {
 		if(shooterState==IDLE){
 			shootVic1.Set(0.0);
 			shootVic2.Set(0.0);
-			aSolenoid.Set(false);
-			bSolenoid.Set(true);
+			aSolenoid.Set(true);
+			bSolenoid.Set(false);
 			printf("Solenoid off\n");
 			if(controlStick.GetTrigger()==true){
 				shooterState=SPINNING;
@@ -113,8 +113,8 @@ class MyRobot : public IterativeRobot {
 			shootVic1.Set(0.3);
 			shootVic2.Set(0.3);
 			if(shootTimer.Get()>=5.0){
-				aSolenoid.Set(true);
-				bSolenoid.Set(false);
+				aSolenoid.Set(false);
+				bSolenoid.Set(true);
 				printf("Solenoid on\n")
 			}
 			if(shootTimer.Get()>5.0){ //check this later
@@ -122,11 +122,11 @@ class MyRobot : public IterativeRobot {
 			}
 		}
 		else if(shooterState==EXTENDING){
-			aSolenoid.Set(true);
-			if(shootTimer.Get()>6.0){
 			aSolenoid.Set(false);
-			bSolenoid.Set(true);
-			printf("Solenoid off\n")
+			if(shootTimer.Get()>6.0){
+			aSolenoid.Set(true);
+			bSolenoid.Set(false);
+			printf("Solenoid off\n");
 			shootTimer.Stop();
 			shootTimer.Reset();
 			shooterState=RECEDING;
